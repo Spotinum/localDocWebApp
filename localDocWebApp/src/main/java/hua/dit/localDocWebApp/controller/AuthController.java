@@ -1,6 +1,8 @@
 package hua.dit.localDocWebApp.controller;
 
 import hua.dit.localDocWebApp.config.JwtUtils;
+import hua.dit.localDocWebApp.entity.Client;
+import hua.dit.localDocWebApp.entity.Doctor;
 import hua.dit.localDocWebApp.entity.Role;
 import hua.dit.localDocWebApp.entity.User;
 import hua.dit.localDocWebApp.payload.request.LoginRequest;
@@ -9,6 +11,8 @@ import hua.dit.localDocWebApp.payload.response.JwtResponse;
 import hua.dit.localDocWebApp.payload.response.MessageResponse;
 import hua.dit.localDocWebApp.repository.RoleRepository;
 import hua.dit.localDocWebApp.repository.UserRepository;
+import hua.dit.localDocWebApp.service.ClientService;
+import hua.dit.localDocWebApp.service.DoctorService;
 import hua.dit.localDocWebApp.service.UserDetailsImpl;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
@@ -46,6 +50,12 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+
+    @Autowired
+    private ClientService clientService;
+
+    @Autowired
+    private DoctorService doctorService;
 
 
     @PostMapping("/signin") //sign in
@@ -120,6 +130,17 @@ public class AuthController {
 
         user.setRoles(roles);
         userRepository.save(user); //saves the user
+
+        if (signUpRequest.getUserRole().equals("ROLE_CLIENT")){
+            System.out.println("TESTTTT");
+            Client client = new Client(signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getEmail(), signUpRequest.getPhone(), signUpRequest.getAddress(), signUpRequest.getCity(), signUpRequest.getState(), signUpRequest.getPostalCode());
+            client.setUser(user);
+            clientService.saveClient(client);
+        }else if (signUpRequest.getUserRole().equals("ROLE_DOCTOR")){
+            Doctor doctor = new Doctor(signUpRequest.getFirstName(), signUpRequest.getLastName(), signUpRequest.getEmail(), signUpRequest.getPhone(), signUpRequest.getAddress(), signUpRequest.getCity(), signUpRequest.getState(), signUpRequest.getPostalCode(), signUpRequest.getSpeciality(), signUpRequest.getMaxClients());
+            doctor.setUser(user);
+            doctorService.saveDoctor(doctor);
+        }
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

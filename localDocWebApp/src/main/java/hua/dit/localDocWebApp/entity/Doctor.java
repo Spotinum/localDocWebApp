@@ -59,7 +59,7 @@ public class Doctor {
 
 
 
-    public Doctor(String firstName, String lastName, String email, String phone, String address, String city, String state, String postalCode, String speciality, Integer maxClients, Integer currentClients) {
+    public Doctor(String firstName, String lastName, String email, String phone, String address, String city, String state, String postalCode, String speciality, Integer maxClients) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
