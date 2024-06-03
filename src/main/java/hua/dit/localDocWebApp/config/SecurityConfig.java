@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(unauthorizedHandler))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/**","/actuator/**").permitAll()
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/v2/api-docs/**",
