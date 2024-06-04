@@ -48,8 +48,6 @@ services:
     depends_on:
       spring:
         condition: service_healthy
-    environment:
-      - VITE_BACKEND=http://localhost:9090
 
 
 volumes:
