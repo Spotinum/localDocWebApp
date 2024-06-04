@@ -41,11 +41,15 @@ services:
   frontend:
     build:
       context: https://github.com/Spotinum/localDocAppVue.git#main
+      args:
+        - VITE_BACKEND_IP=${VITE_BACKEND}
     ports:
       - 9000:80
     depends_on:
       spring:
         condition: service_healthy
+    environment:
+      - VITE_BACKEND=http://localhost:9090
 
 
 volumes:
