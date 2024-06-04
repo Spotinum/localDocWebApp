@@ -39,17 +39,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         final CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:9000"));
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-        corsConfiguration.setAllowCredentials(true);
-
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration);
+        corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("*"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
 
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(source))
+                .cors(cors -> cors.configurationSource(request -> corsConfiguration))
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(unauthorizedHandler))
