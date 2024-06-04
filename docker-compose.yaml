@@ -19,7 +19,7 @@ services:
     volumes:
       - 'dslabdb:/var/lib/postgresql/data/'
   spring:
-    image: ghcr.io/spotinum/localdocapp-spring:1.0
+    image: sp
     build:
       context: .
       dockerfile: nonroot.Dockerfile
@@ -40,13 +40,13 @@ services:
 
   frontend:
     build:
-      context: .
-      dockerfile: frontend.Dockerfile
-    environment:
-      - VITE_BACKEND=http://spring:9090
+      context: https://github.com/Spotinum/localDocAppVue.git#main
     ports:
       - 9000:80
+    depends_on:
+      spring:
+        condition: service_healthy
 
 
 volumes:
-  dslabdb:
+    dslabdb:
