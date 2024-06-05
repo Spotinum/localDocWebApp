@@ -31,9 +31,9 @@ pipeline {
             steps {
                 sh '''
                    # replace dbserver in host_vars
-                    # sed -i 's/dbserver/20.0.152.18/g' ~/workspace/ansible/host_vars/appserver-vm.yaml
-                   # replace workingdir in host_vars
-                    # sed -i 's/vagrant/azureuser/g' ~/workspace/ansible/host_vars/appserver-vm.yaml
+                     sed -i 's/dbserver/20.0.152.18/g' ~/workspace/ansible/host_vars/appserver-vm.yaml
+                     sed -i 's/192.168.56.101/20.0.152.18/g' ~/workspace/ansible/groups_vars/appservers.yaml
+                     sed -i 's/192.168.56.103/20.0.152.18/g' ~/workspace/ansible/groups_vars/appservers.yaml
                 '''
                 sh '''
                     # edit host var for appserver
