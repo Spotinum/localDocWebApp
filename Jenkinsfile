@@ -34,6 +34,7 @@ pipeline {
                    #  sed -i 's/dbserver/localhost/g' ~/workspace/ansible/host_vars/appserver-vm.yaml
                    #  sed -i 's/192.168.56.101/localhost/g' ~/workspace/ansible/group_vars/appservers.yaml
                    #  sed -i 's/192.168.56.103/localhost/g' ~/workspace/ansible/group_vars/appservers.yaml
+                    #  sed -i 's/80/8080/g' ~/workspace/ansible/files/nginx.http.j2
                 '''
                 sh '''
                     # edit host var for appserver
