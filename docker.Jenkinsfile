@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_TOKEN = credentials('Secret text')
+        DOCKER_TOKEN = credentials('secret')
         DOCKER_USER = 'spotinum'
         DOCKER_SERVER = 'ghcr.io'
         DOCKER_PREFIX = 'ghcr.io/spotinum/spring'
