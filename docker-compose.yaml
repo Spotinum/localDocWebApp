@@ -2,51 +2,51 @@ services:
   db:
     image: postgres:14
     expose:
-      - 5432
+      - 5432  #Expose port 5432 internally for inter-service communication
     ports:
-      - "5432:5432"
+      - "5432:5432"  #Map port 5432 on the host to port 5432 in the container
     environment:
-      - POSTGRES_USER=dbuser
-      - POSTGRES_PASSWORD=pass123
-      - POSTGRES_DB=dsdb
+      - POSTGRES_USER=dbuser  #Set the PostgreSQL user to 'dbuser'
+      - POSTGRES_PASSWORD=pass123  #Set the PostgreSQL password to 'pass123'
+      - POSTGRES_DB=dsdb  #Create a PostgreSQL database named 'dsdb'
     healthcheck:
       test:
         - CMD-SHELL
-        - pg_isready -U postgres
-      interval: 30s
-      timeout: 30s
-      retries: 3
+        - pg_isready -U postgres  #Command to check if PostgreSQL is ready
+      interval: 30s  #Time between health checks
+      timeout: 30s  #Time to wait for a health check to complete
+      retries: 3  # umber of retries before considering the service unhealthy
     volumes:
-      - 'dslabdb:/var/lib/postgresql/data/'
+      - 'dslabdb:/var/lib/postgresql/data/'  # ount volume 'dslabdb' for PostgreSQL data
+
   spring:
-    image: sp
+    image: sp  #Use the image named 'sp'
     build:
-      context: .
-      dockerfile: nonroot.Dockerfile
+      context: .  #Build context is the current directory
+      dockerfile: nonroot.Dockerfile  #Use 'nonroot.Dockerfile' for building the image
     ports:
-      - "9090:9090"
+      - "9090:9090"  #Map port 9090 on the host to port 9090 in the container
     depends_on:
       db:
-        condition: service_healthy
+        condition: service_healthy  #Start 'spring' service only if 'db' service is healthy
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/dsdb
-      - SPRING_DATASOURCE_USERNAME=dbuser
-      - SPRING_DATASOURCE_PASSWORD=pass123
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/dsdb  #Database URL for Spring
+      - SPRING_DATASOURCE_USERNAME=dbuser  #Database username for Spring
+      - SPRING_DATASOURCE_PASSWORD=pass123  #Database password for Spring
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9090/actuator/health"]
-      interval: 30s
-      timeout: 30s
-      retries: 3
+      test: ["CMD", "curl", "-f", "http://localhost:9090/actuator/health"]  #Command to check if the Spring application is healthy
+      interval: 30s  #Time between health checks
+      timeout: 30s  #Time to wait for a health check to complete
+      retries: 3  #Number of retries before considering the service unhealthy
 
   frontend:
     build:
-      context: https://github.com/Spotinum/localDocAppVue.git#main
+      context: https://github.com/Spotinum/localDocAppVue.git#main  #Build from the specified GitHub repository and branch
     ports:
-      - 9000:80
+      - 80:80  #Map port 80 on the host to port 80 in the container
     depends_on:
       spring:
-        condition: service_healthy
-
+        condition: service_healthy  #Start 'frontend' service only if 'spring' service is healthy
 
 volumes:
-    dslabdb:
+  dslabdb:
