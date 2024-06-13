@@ -11,6 +11,17 @@ pipeline {
             DOCKER_SERVER = 'ghcr.io'
             DOCKER_PREFIX = 'ghcr.io/spotinum/spring'
         }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'git@github.com:Spotinum/localDocWebApp.git'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './mvnw test'
+            }
+        }
         stage('Docker build and push') {
             steps {
                 sh '''
@@ -21,17 +32,6 @@ pipeline {
                     docker build --rm -t $DOCKER_PREFIX:$TAG -t $DOCKER_PREFIX:latest  -f nonroot.Dockerfile .
                     docker push $DOCKER_PREFIX --all-tags
                 '''
-            }
-        }
-    stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'git@github.com:Spotinum/localDocWebApp.git'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh './mvnw test'
             }
         }
         stage('run ansible pipeline') {
