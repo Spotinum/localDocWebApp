@@ -130,4 +130,38 @@ kubectl apply -f k8s/vue/vue-svc.yaml
 kubectl apply -f k8s/vue/vue-ingress.yaml 
 ```
 
-You can now go to a broswer and type spotinum-spring.ddns.net to look at the application
+You can now go to a broswer and type spotinum-spring.ddns.net to look at the application. Make sure you create your own dns name and add it to the vue-ingress.yaml file.
+
+
+### How to build application with Jenkins K8s
+You must first setup Jenkins on a vm and also download ansible
+
+```bash
+sudo apt-get install openjdk-17-jre
+```
+
+```bash
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins
+```
+
+```bash
+sudo apt update
+sudo apt install software-properties-common
+sudo add-apt-repository --yes --update ppa:ansible/ansible
+sudo apt install ansible
+```
+
+Once Jenkins is setup make sure to create an ssh key and connect it to github as jenkins user.
+
+Then create a pipeline project that clones the localDoApp repository (the one currently in) and run the k8s.Jenkinsfile. Make sure to change the ip in the Jenkinsfile to the ip of the vm where the k8s is running. Also make sure to change the dns name in the vue-ingress.yaml file to the dns name you have set up. Once everything is ready press build on the pipeline project and wait for it to start.
+Also make sure in the jenkins vm to add in the ssh config a k8s host that connects to the deployment vm for k8s
+
+
+
+
