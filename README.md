@@ -9,6 +9,7 @@ docker run --name ds-lab-pg --rm \
 postgres:14
 ```
 
+
 ### How to run a postgres container for development Windows
 
 ```bash
