@@ -16,7 +16,6 @@ postgres:14
 docker run --name ds-lab-pg --rm -p 5432:5432 -e POSTGRES_PASSWORD=pass123  -e POSTGRES_USER=dbuser  -e POSTGRES_DB=appdb   -v ds-lab-vol:/var/lib/postgresql/data  postgres:14
 ```
 
-
 ### How to build application with Docker-compose
 To start you must have docker and docker-compose installed on your system. Then you can simply run the command as is
 ```bash
